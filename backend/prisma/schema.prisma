@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  
+}
+
+model Retreat {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  location    String
+  price       Float
+  duration    Int
+  type        String
+  condition   String
+  image       String
+  date        Int
+  tag         String[]
+  bookings    Booking[]
+}
+
+model Booking {
+  id             Int      @id @default(autoincrement())
+  userId         Int
+  userName       String
+  userEmail      String
+  userPhone      String
+  retreatId      Int
+  retreat        Retreat  @relation(fields: [retreatId], references: [id])
+  paymentDetails String
+  bookingDate    DateTime
+
+  @@unique([userId, retreatId])
+}
