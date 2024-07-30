@@ -62,3 +62,5 @@ jobs:
           docker pull maniteja2601/wellness-frontend:latest
           docker-compose up -d
         EOF
+
+      
