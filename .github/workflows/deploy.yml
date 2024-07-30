@@ -59,8 +59,8 @@ jobs:
           echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
           echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
           echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
-          echo "VITE_BACKEND_API=http://localhost:3001/api/v1/retreats" > frontend/.env
-          echo "VITE_BOOKING_API=http://localhost:3001/api/v1/book" >> frontend/.env
+          echo "VITE_BACKEND_API=http://13.49.76.165:3001/api/v1/retreats" > frontend/.env
+          echo "VITE_BOOKING_API=http://13.49.76.165:3001/api/v1/book" >> frontend/.env
           sudo docker pull maniteja2601/wellness-backend:latest
             sudo docker pull maniteja2601/wellness-frontend:latest
             sudo docker stop wellness-backend || true
