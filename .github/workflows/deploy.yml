@@ -55,11 +55,17 @@ jobs:
         username: ${{ secrets.EC2_SSH_USERNAME }}
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" > .env
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
+          echo "VITE_BACKEND_API=http://localhost:3001/api/v1/retreats" > frontend/.env
+          echo "VITE_BOOKING_API=http://localhost:3001/api/v1/book" >> frontend/.env
           sudo docker pull maniteja2601/wellness-backend:latest
             sudo docker pull maniteja2601/wellness-frontend:latest
             sudo docker stop wellness-backend || true
             sudo docker rm wellness-backend || true
             sudo docker stop wellness-frontend || true
             sudo docker rm wellness-frontend || true
-            sudo docker run -d --name wellness-backend -p 3001:3001 maniteja2601/wellness-backend:latest
+            sudo docker run -d --name wellness-backend -p 3001:3001 --env-file .env maniteja2601/wellness-backend:latest
             sudo docker run -d --name wellness-frontend -p 80:3000 maniteja2601/wellness-frontend:latest
