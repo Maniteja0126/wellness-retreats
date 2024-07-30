@@ -40,26 +40,4 @@ jobs:
         docker build -t maniteja2601/wellness-frontend:latest -f frontend/Dockerfile ./frontend
         docker push maniteja2601/wellness-frontend:latest
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up kubectl
-      uses: azure/setup-kubectl@v1
-      with:
-        version: 'v1.19.6'
-
-    - name: Deploy to Kubernetes
-      env:
-        KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
-      run: |
-        mkdir -p $HOME/.kube
-        echo "${KUBE_CONFIG_DATA}" | base64 --decode > $HOME/.kube/config
-        kubectl apply -f k8s/backend-deployment.yml
-        kubectl apply -f k8s/frontend-deployment.yml
-        kubectl apply -f k8s/db-deployment.yml
-        kubectl apply -f k8s/service.yaml
