@@ -55,7 +55,7 @@ jobs:
       run: |
         echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > wellness-maniteja.pem
         chmod 600 wellness-maniteja.pem
-        ssh -o StrictHostKeyChecking=no -i private-key.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
+        ssh -o StrictHostKeyChecking=no -i wellness-maniteja.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
           docker pull maniteja2601/wellness-backend:latest
           docker pull maniteja2601/wellness-frontend:latest
           docker-compose up -d
