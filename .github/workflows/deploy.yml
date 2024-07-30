@@ -49,14 +49,17 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Deploy to EC2
-      env:
-        EC2_PUBLIC_IP: ${{ secrets.EC2_PUBLIC_IP }}
-        EC2_SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-      run: |
-        echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > wellness-maniteja.pem
-        chmod 600 wellness-maniteja.pem
-        ssh -o StrictHostKeyChecking=no -i wellness-maniteja.pem ubuntu@${{ secrets.EC2_PUBLIC_IP }} << 'EOF'
-          docker pull maniteja2601/wellness-backend:latest
-          docker pull maniteja2601/wellness-frontend:latest
-          docker-compose up -d
-        EOF
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_PUBLIC_IP }}
+        username: ${{ secrets.EC2_SSH_USERNAME }}
+        key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+        script: |
+          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/wellness-backend:latest
+            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/wellness-frontend:latest
+            sudo docker stop wellness-backend || true
+            sudo docker rm wellness-backend || true
+            sudo docker stop wellness-frontend || true
+            sudo docker rm wellness-frontend || true
+            sudo docker run -d --name wellness-backend -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/wellness-backend:latest
+            sudo docker run -d --name wellness-frontend -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/wellness-frontend:latest
