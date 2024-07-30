@@ -61,5 +61,5 @@ jobs:
             sudo docker rm wellness-backend || true
             sudo docker stop wellness-frontend || true
             sudo docker rm wellness-frontend || true
-            sudo docker run -d --name wellness-backend -p 8080:8080 maniteja2601/wellness-backend:latest
-            sudo docker run -d --name wellness-frontend -p 80:80 maniteja2601/wellness-frontend:latest
+            sudo docker run -d --name wellness-backend -p 3001:3001 maniteja2601/wellness-backend:latest
+            sudo docker run -d --name wellness-frontend -p 80:3000 maniteja2601/wellness-frontend:latest
