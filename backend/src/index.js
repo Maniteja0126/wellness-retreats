@@ -5,7 +5,9 @@ const bookingRoutes = require('./routes/bookingRoutes')
 
 const app = express();
 const port = process.env.PORT || 3001;
-app.use(cors());
+app.use(cors({
+    origin:"http://13.49.76.165/"
+}));
 app.use(express.json());
 
 
