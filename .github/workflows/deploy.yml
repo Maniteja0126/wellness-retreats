@@ -55,11 +55,11 @@ jobs:
         username: ${{ secrets.EC2_SSH_USERNAME }}
         key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         script: |
-          sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/wellness-backend:latest
-            sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/wellness-frontend:latest
+          sudo docker pull maniteja2601/wellness-backend:latest
+            sudo docker pull maniteja2601/wellness-frontend:latest
             sudo docker stop wellness-backend || true
             sudo docker rm wellness-backend || true
             sudo docker stop wellness-frontend || true
             sudo docker rm wellness-frontend || true
-            sudo docker run -d --name wellness-backend -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/wellness-backend:latest
-            sudo docker run -d --name wellness-frontend -p 80:80 ${{ secrets.DOCKERHUB_USERNAME }}/wellness-frontend:latest
+            sudo docker run -d --name wellness-backend -p 8080:8080 maniteja2601/wellness-backend:latest
+            sudo docker run -d --name wellness-frontend -p 80:80 maniteja2601/wellness-frontend:latest
