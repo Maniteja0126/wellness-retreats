@@ -1,6 +1,6 @@
 # Wellness Retreat
 
-This repository contains the code for the Wellness Retreat project. It includes a frontend and backend application, along with deployment configurations for Kubernetes and Docker.
+This repository contains the code for the Wellness Retreat project. It includes a frontend and backend application, along with deployment configurations using Docker.
 
 ## Table of Contents
 
@@ -8,8 +8,7 @@ This repository contains the code for the Wellness Retreat project. It includes 
 - [Clone the Repository](#clone-the-repository)
 - [Setup Without Docker](#setup-without-docker)
 - [Setup With Docker](#setup-with-docker)
-- [Kubernetes Deployment](#kubernetes-deployment)
-
+- [Deployment](#deployment)
 
 ## Prerequisites
 
@@ -17,16 +16,15 @@ Before setting up the project, ensure you have the following installed:
 
 - Git
 - Node.js (v14.x or later)
-- Docker (for Docker setup)
-- Docker Compose (for Docker setup)
+- Docker
+- Docker Compose
 
 ## Clone the Repository
 
 1. Clone the repository using Git:
 
     ```sh
-    git clone https://github.com/<your-username>/wellness-retreat.git
-    cd wellness-retreat
+    git clone https://github.com/Maniteja0126/wellness-retreats.git
     ```
 
 ## Setup Without Docker
@@ -87,15 +85,15 @@ Before setting up the project, ensure you have the following installed:
 
 ## Setup With Docker
 
-1. **Build and Start Containers Using Docker Compose:**
+1. **Navigate to the Docker Directory:**
 
-    Navigate to the `k8s` directory (or where your `docker-compose.yml` is located):
+    Ensure your `docker-compose.yml` file is in the appropriate directory, e.g., `docker` or the root of your project.
 
     ```sh
-    cd k8s
+    cd docker
     ```
 
-2. **Build and Start the Containers:**
+2. **Build and Start Containers Using Docker Compose:**
 
     ```sh
     docker-compose up --build
@@ -109,39 +107,37 @@ Before setting up the project, ensure you have the following installed:
     - **Backend:** Access at `http://localhost:3001`
     - **Database:** Available only within the Docker network, not exposed directly
 
-## Kubernetes Deployment
+## Deployment
 
-To deploy the application on a Kubernetes cluster, ensure you have a configured Kubernetes cluster and `kubectl` set up.
+1. **Prepare Your EC2 Instance:**
 
-1. **Apply Kubernetes Secrets:**
+    - Ensure Docker and Docker Compose are installed on your EC2 instance.
+    - Set up SSH access to your EC2 instance.
 
-    ```sh
-    kubectl apply -f k8s/secret.yaml
-    ```
+2. **Deploy Using Docker Compose:**
 
-2. **Deploy the Backend:**
+    - **Transfer Docker Compose File and Code:**
 
-    ```sh
-    kubectl apply -f k8s/backend-deployment.yml
-    ```
+        ```sh
+        scp -i <your-ec2-key.pem> -r docker/* ec2-user@<ec2-instance-ip>:/home/ec2-user/app
+        ```
 
-3. **Deploy the Frontend:**
+    - **SSH into EC2 Instance:**
 
-    ```sh
-    kubectl apply -f k8s/frontend-deployment.yml
-    ```
+        ```sh
+        ssh -i <your-ec2-key.pem> ec2-user@<ec2-instance-ip>
+        ```
 
-4. **Deploy the Database:**
+    - **Navigate to the Application Directory and Start Containers:**
 
-    ```sh
-    kubectl apply -f k8s/db-deployment.yml
-    ```
+        ```sh
+        cd /home/ec2-user/app
+        docker-compose up -d
+        ```
 
-5. **Expose Services:**
+    This will deploy the application on your EC2 instance using Docker Compose.
 
-    ```sh
-    kubectl apply -f k8s/service.yaml
-    ```
+## Notes
 
-
-
+- Make sure your environment variables are properly configured in `.env` files for both local development and production deployment.
+- For security reasons, handle sensitive information like database credentials carefully, especially when transferring files to your EC2 instance.
